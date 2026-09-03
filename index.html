@@ -1,24 +1,56 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Fast Air Cargo UK Calculator</title>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#f57c00">
+<title>Fast Air Cargo - UK Rate Calculator</title>
 <style>
-*{box-sizing:border-box}body{margin:0;background:#f3f5f7;font-family:Arial,sans-serif;color:#111}.app{max-width:520px;min-height:100vh;margin:auto;background:#fff}.head{background:#111;color:#fff;padding:28px 22px;border-radius:0 0 24px 24px}.brand{font-size:25px;font-weight:800}.sub{color:#bbb;margin-top:6px;font-size:14px}.card{margin:18px;padding:20px;border:1px solid #e5e5e5;border-radius:20px;box-shadow:0 8px 25px #0001}label{display:block;font-size:13px;font-weight:700;margin:14px 0 7px}input,select{width:100%;padding:15px;border:1px solid #d5d8dc;border-radius:12px;font-size:16px;background:#fff}button{width:100%;padding:15px;border:0;border-radius:13px;font-size:16px;font-weight:800;cursor:pointer}.calc{background:#111;color:#fff;margin-top:18px}.result{display:none;margin-top:18px;padding:20px;text-align:center;background:#f1f3f5;border-radius:18px}.price{font-size:32px;font-weight:900;margin:8px 0}.small{font-size:13px;color:#666}.service{font-weight:700}.wa{background:#25d366;color:#fff;margin-top:14px}.note{font-size:12px;color:#666;line-height:1.5;margin-top:14px}
-</style></head><body><div class="app"><div class="head"><div class="brand">FAST AIR CARGO</div><div class="sub">🇬🇧 UK Shipping — Smart Rate Calculator</div></div>
-<div class="card"><label>PARCEL WEIGHT (KG)</label><input id="w" type="number" min="1" step="0.1" placeholder="e.g. 23">
-<label>SELECT SERVICE</label><select id="s"><option value="regular">🚚 Regular</option><option value="express">⚡ Express</option><option value="priority">⭐ Priority</option><option value="premium">💎 Premium</option><option value="secure">🔐 Secure</option><option value="cod">💷 COD</option></select>
-<button class="calc" onclick="go()">CALCULATE EXACT PRICE</button><div id="r" class="result"><div id="n" class="service"></div><div id="wt" class="small"></div><div id="p" class="price"></div><div id="d" class="small"></div><button class="wa" onclick="wa()">📲 GET QUOTE ON WHATSAPP</button></div>
-<div class="note">Rates are calculated from the configured Fast Air Cargo rate structure.</div></div></div>
+:root{--o:#f57c00;--od:#d96800;--ink:#171717;--muted:#6b7280;--bg:#f6f6f6;--line:#e9e9e9}
+*{box-sizing:border-box}body{margin:0;font-family:Arial,Helvetica,sans-serif;background:linear-gradient(#fff 0 330px,#f6f6f6 700px);color:var(--ink)}
+.wrap{max-width:1050px;margin:auto;padding:18px 14px 40px}
+header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
+.brand{display:flex;align-items:center;gap:10px}.logo{width:46px;height:46px;border-radius:14px;background:var(--o);color:#fff;display:grid;place-items:center;font-size:22px;font-weight:900;box-shadow:0 8px 22px #f57c0038}
+.brand h1{font-size:19px;margin:0;font-weight:900}.brand p{font-size:11px;color:var(--muted);margin:3px 0 0}.pill{padding:8px 11px;border-radius:99px;background:#fff1e3;color:#c45d00;font-size:11px;font-weight:900}
+.hero{background:#171717;color:#fff;border-radius:26px;padding:25px;position:relative;overflow:hidden;box-shadow:0 18px 40px #0002}.hero:after{content:"";position:absolute;width:260px;height:260px;border-radius:50%;background:var(--o);right:-110px;top:-130px}
+.eyebrow{color:#ffad57;font-size:10px;letter-spacing:1.5px;font-weight:900;text-transform:uppercase}.hero h2{font-size:32px;line-height:1.05;margin:8px 0;letter-spacing:-1px;position:relative;z-index:1}.hero p{color:#d0d0d0;font-size:13px;margin:0;position:relative;z-index:1}
+.calc{background:#fff;color:#171717;border-radius:18px;padding:13px;margin-top:20px;display:flex;gap:10px;align-items:end;position:relative;z-index:2}.field{flex:1}label{display:block;font-size:10px;color:#777;font-weight:900;text-transform:uppercase;margin:0 0 6px}
+input{width:100%;height:53px;border:2px solid #e8e8e8;border-radius:13px;padding:0 14px;font-size:21px;font-weight:900;outline:0}input:focus{border-color:var(--o)}.kg{height:53px;width:62px;background:#fff1e3;color:#c45d00;border-radius:13px;display:grid;place-items:center;font-weight:900}.btn{height:53px;border:0;border-radius:13px;background:var(--o);color:#fff;padding:0 20px;font-weight:900;cursor:pointer}.btn:hover{background:var(--od)}
+.head{display:flex;justify-content:space-between;align-items:center;margin:28px 2px 12px}.head h3{font-size:18px;margin:0}.head span{font-size:10px;color:var(--muted)}
+.cards{display:grid;grid-template-columns:1fr 1fr;gap:13px}.card{background:#fff;border:1px solid var(--line);border-radius:19px;padding:17px;box-shadow:0 5px 18px #00000009;position:relative}.card.best{border:2px solid var(--o)}.tag{position:absolute;right:14px;top:14px;background:var(--o);color:#fff;padding:5px 8px;border-radius:99px;font-size:8px;font-weight:900;text-transform:uppercase}
+.top{display:flex;gap:10px;align-items:center}.icon{width:42px;height:42px;border-radius:12px;background:#fff1e3;display:grid;place-items:center;font-size:20px}.name{font-size:15px;font-weight:900}.delivery{font-size:10px;color:var(--muted);margin-top:3px}.price{font-size:27px;font-weight:950;margin:16px 0 2px;letter-spacing:-.7px}.price small{font-size:10px;color:var(--muted);font-weight:700;margin-left:4px}.sub{font-size:10px;color:#777}.details{border-top:1px solid #f0f0f0;margin-top:12px;padding-top:11px}.row{display:flex;justify-content:space-between;gap:10px;font-size:10px;margin:6px 0}.row span{text-align:right;color:#777}.note{background:#fafafa;border-radius:10px;padding:8px;margin-top:10px;font-size:9px;color:#777;line-height:1.4}
+.quote{margin-top:15px;background:#fff;border:1px solid var(--line);border-radius:18px;padding:15px;display:flex;justify-content:space-between;align-items:center;gap:12px}.quote strong{font-size:14px}.quote p{font-size:10px;color:#777;margin:4px 0 0}.wa{background:#159447;color:#fff;text-decoration:none;padding:12px 14px;border-radius:12px;font-size:10px;font-weight:900;white-space:nowrap}
+.info{display:grid;grid-template-columns:repeat(3,1fr);gap:11px;margin-top:15px}.info div{background:#fff;border:1px solid var(--line);border-radius:15px;padding:13px}.info b{display:block;font-size:11px;margin-bottom:4px}.info span{font-size:9px;color:#777;line-height:1.4}footer{text-align:center;color:#999;font-size:9px;margin-top:25px}
+.err{display:none;color:#c62828;font-size:10px;font-weight:700;margin-top:5px}
+@media(max-width:700px){.wrap{padding:13px 11px 30px}.pill{display:none}.hero{padding:20px;border-radius:21px}.hero h2{font-size:27px}.calc{display:grid;grid-template-columns:1fr 58px}.calc .btn{grid-column:1/-1;width:100%}.cards{grid-template-columns:1fr}.quote{flex-direction:column;align-items:stretch}.wa{text-align:center}.info{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header><div class="brand"><div class="logo">✈</div><div><h1>FAST AIR CARGO</h1><p>UK Shipping • Smart Rate Calculator</p></div></div><div class="pill">🇬🇧 UK RATES</div></header>
+<section class="hero">
+<div class="eyebrow">Instant quotation</div><h2>Enter your weight.<br>See every service rate.</h2>
+<p>Enter the shipment weight once and compare all available UK services instantly.</p>
+<div class="calc"><div class="field"><label>Shipment Weight</label><input id="weight" type="number" min="1" step=".1" placeholder="e.g. 23" oninput="calculate()"><div id="err" class="err">Please enter at least 1 KG.</div></div><div class="kg">KG</div><button class="btn" onclick="calculate()">CALCULATE</button></div>
+</section>
+<div class="head"><h3 id="title">UK Service Rates</h3><span>Prices in PKR</span></div>
+<div id="cards" class="cards"></div>
+<div class="quote"><div><strong>Need a confirmed quotation?</strong><p>Send your weight to Fast Air Cargo on WhatsApp.</p></div><a id="wa" class="wa" target="_blank" href="#">💬 GET QUOTE ON WHATSAPP</a></div>
+<div class="info"><div><b>📦 Weight Based</b><span>Enter shipment weight to compare the services.</span></div><div><b>⚡ Fast Options</b><span>Regular, Express, Priority, Premium, Secure and COD.</span></div><div><b>📞 Final Confirmation</b><span>Confirm the final quotation before booking.</span></div></div>
+<footer>FAST AIR CARGO • UK SHIPPING RATE CALCULATOR</footer>
+</div>
 <script>
-let q;
-const money=x=>"Rs. "+Math.round(x).toLocaleString("en-PK");
-function go(){
-let w=+document.getElementById("w").value,s=document.getElementById("s").value,p,d,n;
-if(!w||w<1)return alert("Please enter a valid weight.");
-if(s=="regular"){n="🚚 UK Regular";d="6–8 Working Days";p=w<15?4500+(Math.ceil(w)-1)*1499:w<=50?w*1600:w<=80?w*1530:w*1500}
-if(s=="express"){n="⚡ UK Express";d="5–7 Working Days";p=6500+(Math.ceil(w)-1)*1950}
-if(s=="priority"){n="⭐ UK Priority";d="4–6 Working Days";if(w<=5)p=9500+(Math.ceil(w)-1)*2250;else if(w<=15)p=w*3150;else if(w<=25)p=w*2950;else return alert("Priority rate above 25 KG is not configured.")}
-if(s=="premium"){n="💎 UK Premium";d="3–5 Working Days";p=w<=5?11500+(Math.ceil(w)-1)*3840:w<=10?w*4650:w<=20?w*4250:w*3500}
-if(s=="secure"||s=="cod"){n=s=="secure"?"🔐 UK Secure":"💷 UK COD";d=s=="secure"?"7 Working Days":"8 Working Days";p=w<10?5500+(Math.ceil(w)-1)*1650:w<20?4000+(Math.ceil(w)-10)*1650:w*1650}
-q={w,s,n,p,d};document.getElementById("n").textContent=n;document.getElementById("wt").textContent="Weight: "+w+" KG";document.getElementById("p").textContent=money(p);document.getElementById("d").textContent="Delivery: "+d;document.getElementById("r").style.display="block"}
-function wa(){let m=`FAST AIR CARGO — UK QUOTE\n\nService: ${q.n}\nWeight: ${q.w} KG\nTotal: ${money(q.p)}\nDelivery: ${q.d}`;open("https://wa.me/?text="+encodeURIComponent(m),"_blank")}
-</script></body></html>
+const services=[
+{name:"Regular Service",icon:"📦",delivery:"6–8 Working Days",calc:w=>w<15?4500+(w-1)*1499:w<50?w*1600:w<80?w*1530:w*1500,detail:w=>w<15?"1st KG Rs. 4,500 • Add KG Rs. 1,499":w<50?"15–49 KG: Rs. 1,600 / KG":w<80?"50–79 KG: Rs. 1,530 / KG":"80+ KG: Rs. 1,500 / KG"},
+{name:"Express Service",icon:"🚀",delivery:"5–7 Working Days",calc:w=>6500+(w-1)*1950,detail:w=>"1st KG Rs. 6,500 • Add KG Rs. 1,950"},
+{name:"Priority Service",icon:"⚡",delivery:"4–6 Working Days",calc:w=>w<=5?9500+(w-1)*2250:w<=15?w*3150:w<=25?w*2950:null,detail:w=>w<=5?"1st KG Rs. 9,500 • Add KG Rs. 2,250":w<=15?"6–15 KG: Rs. 3,150 / KG":w<=25?"16–25 KG: Rs. 2,950 / KG":"Rate above 25 KG not listed — contact us"},
+{name:"Premium Service",icon:"👑",delivery:"3–5 Working Days",calc:w=>w<=5?11500+(w-1)*3840:w<=10?w*4650:w<=20?w*4250:w*3500,detail:w=>w<=5?"1st KG Rs. 11,500 • Add KG Rs. 3,840":w<=10?"6–10 KG: Rs. 4,650 / KG":w<=20?"11–20 KG: Rs. 4,250 / KG":"21+ KG: Rs. 3,500 / KG"},
+{name:"Secure Service",icon:"🔐",delivery:"7 Working Days",extra:"£4 / box",calc:w=>w===1?5500:w<10?5500+(w-1)*1650:w<20?4000+(w-10)*1650:w*1650,detail:w=>w===1?"1 KG: Rs. 5,500":w<10?"2–9 KG: 1st KG Rs. 5,500 • Add KG Rs. 1,650":w<20?"10–19 KG: 1st KG Rs. 4,000 • Add KG Rs. 1,650":"20+ KG: Rs. 1,650 / KG"},
+{name:"COD Service",icon:"💰",delivery:"8 Working Days",extra:"£7 / box",calc:w=>w===1?5500:w<10?5500+(w-1)*1650:w<20?4000+(w-10)*1650:w*1650,detail:w=>w===1?"1 KG: Rs. 5,500":w<10?"2–9 KG: 1st KG Rs. 5,500 • Add KG Rs. 1,650":w<20?"10–19 KG: 1st KG Rs. 4,000 • Add KG Rs. 1,650":"20+ KG: Rs. 1,650 / KG"}];
+const money=n=>"Rs. "+Math.round(n).toLocaleString("en-PK");
+function calculate(){let w=parseFloat(document.getElementById("weight").value);document.getElementById("err").style.display=(!w||w<1)?"block":"none";if(!w||w<1){document.getElementById("title").textContent="UK Service Rates";render(1);return}document.getElementById("title").textContent="Rates for "+w+" KG";render(w)}
+function render(w){let data=services.map(s=>({s,v:s.calc(w)})),nums=data.filter(x=>x.v!==null).map(x=>x.v),min=Math.min(...nums);document.getElementById("cards").innerHTML=data.map(x=>{let best=x.v!==null&&x.v===min&&x.s.name!=="Secure Service"&&x.s.name!=="COD Service";return `<article class="card ${best?"best":""}">${best?'<div class="tag">Best Value</div>':""}<div class="top"><div class="icon">${x.s.icon}</div><div><div class="name">${x.s.name}</div><div class="delivery">${x.s.delivery}</div></div></div><div class="price">${x.v===null?"Contact Us":money(x.v)}${x.s.extra?`<small>+ ${x.s.extra}</small>`:""}</div><div class="sub">${x.v===null?"Rate not listed for this weight":"Estimated service charge"}</div><div class="details"><div class="row"><b>Weight</b><span>${w} KG</span></div><div class="row"><b>Rate structure</b><span>${x.s.detail(w)}</span></div></div>${x.s.extra?`<div class="note">Extra charge ${x.s.extra}. Confirm final quotation before booking.</div>`:""}</article>`}).join("")}
+document.getElementById("wa").onclick=function(e){let w=parseFloat(document.getElementById("weight").value);if(!w||w<1){e.preventDefault();document.getElementById("weight").focus();return}this.href="https://wa.me/?text="+encodeURIComponent("Assalam o Alaikum, I need a UK shipping quotation for "+w+" KG. Please confirm the available services and final charges.")};
+render(1);
+</script>
+</body></html>
