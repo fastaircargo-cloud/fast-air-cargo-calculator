@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Fast Air Cargo UK Calculator</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#f3f5f7;font-family:Arial,sans-serif;color:#111}.app{max-width:520px;min-height:100vh;margin:auto;background:#fff}.head{background:#111;color:#fff;padding:28px 22px;border-radius:0 0 24px 24px}.brand{font-size:25px;font-weight:800}.sub{color:#bbb;margin-top:6px;font-size:14px}.card{margin:18px;padding:20px;border:1px solid #e5e5e5;border-radius:20px;box-shadow:0 8px 25px #0001}label{display:block;font-size:13px;font-weight:700;margin:14px 0 7px}input,select{width:100%;padding:15px;border:1px solid #d5d8dc;border-radius:12px;font-size:16px;background:#fff}button{width:100%;padding:15px;border:0;border-radius:13px;font-size:16px;font-weight:800;cursor:pointer}.calc{background:#111;color:#fff;margin-top:18px}.result{display:none;margin-top:18px;padding:20px;text-align:center;background:#f1f3f5;border-radius:18px}.price{font-size:32px;font-weight:900;margin:8px 0}.small{font-size:13px;color:#666}.service{font-weight:700}.wa{background:#25d366;color:#fff;margin-top:14px}.note{font-size:12px;color:#666;line-height:1.5;margin-top:14px}
+</style></head><body><div class="app"><div class="head"><div class="brand">FAST AIR CARGO</div><div class="sub">🇬🇧 UK Shipping — Smart Rate Calculator</div></div>
+<div class="card"><label>PARCEL WEIGHT (KG)</label><input id="w" type="number" min="1" step="0.1" placeholder="e.g. 23">
+<label>SELECT SERVICE</label><select id="s"><option value="regular">🚚 Regular</option><option value="express">⚡ Express</option><option value="priority">⭐ Priority</option><option value="premium">💎 Premium</option><option value="secure">🔐 Secure</option><option value="cod">💷 COD</option></select>
+<button class="calc" onclick="go()">CALCULATE EXACT PRICE</button><div id="r" class="result"><div id="n" class="service"></div><div id="wt" class="small"></div><div id="p" class="price"></div><div id="d" class="small"></div><button class="wa" onclick="wa()">📲 GET QUOTE ON WHATSAPP</button></div>
+<div class="note">Rates are calculated from the configured Fast Air Cargo rate structure.</div></div></div>
+<script>
+let q;
+const money=x=>"Rs. "+Math.round(x).toLocaleString("en-PK");
+function go(){
+let w=+document.getElementById("w").value,s=document.getElementById("s").value,p,d,n;
+if(!w||w<1)return alert("Please enter a valid weight.");
+if(s=="regular"){n="🚚 UK Regular";d="6–8 Working Days";p=w<15?4500+(Math.ceil(w)-1)*1499:w<=50?w*1600:w<=80?w*1530:w*1500}
+if(s=="express"){n="⚡ UK Express";d="5–7 Working Days";p=6500+(Math.ceil(w)-1)*1950}
+if(s=="priority"){n="⭐ UK Priority";d="4–6 Working Days";if(w<=5)p=9500+(Math.ceil(w)-1)*2250;else if(w<=15)p=w*3150;else if(w<=25)p=w*2950;else return alert("Priority rate above 25 KG is not configured.")}
+if(s=="premium"){n="💎 UK Premium";d="3–5 Working Days";p=w<=5?11500+(Math.ceil(w)-1)*3840:w<=10?w*4650:w<=20?w*4250:w*3500}
+if(s=="secure"||s=="cod"){n=s=="secure"?"🔐 UK Secure":"💷 UK COD";d=s=="secure"?"7 Working Days":"8 Working Days";p=w<10?5500+(Math.ceil(w)-1)*1650:w<20?4000+(Math.ceil(w)-10)*1650:w*1650}
+q={w,s,n,p,d};document.getElementById("n").textContent=n;document.getElementById("wt").textContent="Weight: "+w+" KG";document.getElementById("p").textContent=money(p);document.getElementById("d").textContent="Delivery: "+d;document.getElementById("r").style.display="block"}
+function wa(){let m=`FAST AIR CARGO — UK QUOTE\n\nService: ${q.n}\nWeight: ${q.w} KG\nTotal: ${money(q.p)}\nDelivery: ${q.d}`;open("https://wa.me/?text="+encodeURIComponent(m),"_blank")}
+</script></body></html>
